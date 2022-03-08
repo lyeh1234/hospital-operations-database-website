@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+    <title>Hospital</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    {% for myscript in jsscripts %}
+    <script src="/static/{{myscript}}"></script>
+    {% endfor %}
+
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <script src="/static/index.js"></script>
+
+</head>
+<body>
+    <div class="navbar">
+        <a class="active" href="/index">Home</a>
+        <a href="/doctors">Doctors</a>
+        <a href="/nurses">Nurses</a>
+        <a href="/patients">Patients</a>
+        <a href="/prescriptions">Prescriptions</a>
+    </div>
+
+    <h1>Manage nursesPatients</h1>
+
+    <!-- Post Form with Fieldset Tag -->
+    <form method="POST" action="nursesPatients">
+      <fieldset>
+
+          <legend>Add Nurse-Patient Relationship</legend>
+
+            <label for="num">Nurse</label>
+            <select name="nurseID" class="npselect" required>
+              <option disabled selected value=""> -- select an option -- </option>
+
+              {% for n in nurses %}
+              <!-- n[0] = nurseID, n[1] = nurseName -->
+              <option value="{{ n[0] }}">(ID: {{n[0]}}) {{n[1]}}</option>
+              {% endfor %}
+            </select>
+
+            <label for="num">Patient</label>
+            <select name="patientID" class="npselect" required>
+              <option disabled selected value=""> -- select an option -- </option>
+
+              {% for p in patients %}
+              <!-- p[0] = patientID, p[1] = patientName -->
+              <option value="{{ p[0] }}">(ID: {{p[0]}}) {{p[1]}}</option>
+              {% endfor %}
+            </select>
+
+          <input type="submit" name="insertNursesPatients" value="Submit">
+
+      </fieldset>
+    </form>
+
+
+    <h3>View Nurses:</h3>
+    <div class="topnav">
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search..." name="search" onkeyup="searchFilter()">
+    </div>
+    </div>
+
+      <table id="dataTable">
+        <tr>
+          <th></th>
+          <th>Nurse</th>
+          <th>Patient</th>
+        </tr>
+
+        {% for np in nursesPatients %}
+        <tr>
+          <td>
+            <!-- <form method="POST" action="/update/{{np[0]}} {{np[2]}}?table=nursesPatients"><button name="updateButton">UPDATE</button></form> -->
+            <form method="POST" action="/nursesPatients"><input hidden name="nurseID" value="{{np[0]}}"><input hidden name="patientID" value="{{np[2]}}"><button type="submit" name="deleteNursesPatients">DELETE</button></form>
+          </td>
+          <td>(ID: {{np[0]}}) {{np[1]}}</td>  <!-- nurse id, nurse name -->
+          <td>(ID: {{np[2]}}) {{np[3]}}</td>  <!-- patient id, patient name -->
+        </tr>
+        {% endfor %}
+
+      </table>
+
+
+</body>
+</html>

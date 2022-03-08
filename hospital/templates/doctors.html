@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <title>Hospital</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    {% for myscript in jsscripts %}
+    <script src="/static/{{myscript}}"></script>
+    {% endfor %}
+
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <script src="/static/index.js"></script>
+
+</head>
+<body>
+    <div class="navbar">
+        <a class="active" href="/index">Home</a>
+        <a href="/doctors">Doctors</a>
+        <a href="/nurses">Nurses</a>
+        <a href="/patients">Patients</a>
+        <a href="/prescriptions">Prescriptions</a>
+    </div>
+    <h1>Doctors</h1>
+
+    <!-- Post Form with Fieldset Tag -->
+    <form method="POST" action="/doctors" name="doctors">
+    <fieldset>
+
+        <legend>Add Doctor</legend>
+        <label for="txt">Name:</label>
+        <input type='text' name='doctorName' required><br><br>
+
+        <label for="txt">Specialty:</label>
+        <input type='text' name='doctorSpecialty'><br><br>
+
+        <label for="num">Phone Number:</label>
+        <input type='tel' name='doctorPhone' required><br><br>
+
+        <input type="submit" name="insertDoctor" value="Submit">
+
+    </fieldset>
+    </form>
+
+    <h3>View Doctors:</h3>
+    <div class="topnav">
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search..." name="search" onkeyup="searchFilter()">
+      </div>
+    </div>
+
+    <table id="dataTable">
+      <tr>
+        <th></th>
+        <th>Doctor ID</th>
+        <th>Doctor Name</th>
+        <th>Doctor Specialty</th>
+        <th>Doctor Phone</th>
+      </tr>
+      {% for d in doctors %}
+      <tr>
+        <td>
+          <form method="POST" action="{{ url_for('update', id=d[0], table='doctors') }}"><button name="updateButton">UPDATE</button></form>
+          <form method="POST" action="/doctors"><input hidden name="doctorID" value={{d[0]}}><button type="submit" name="deleteDoctor">DELETE</button></form>
+        </td>
+        <td title="{{d[0]}}">{{d[0]}}</td>
+        <td title="{{d[1]}}">{{d[1]}}</td>
+        <td title="{{d[2]}}">{{d[2]}}</td>
+        <td title="{{d[3]}}">{{d[3]}}</td>
+      </tr>
+      {% endfor %}
+
+    </table>
+</body>
+</html>

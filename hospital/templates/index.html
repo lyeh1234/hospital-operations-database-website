@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+    <title>Hospital</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    {% for myscript in jsscripts %}
+    <script src="/static/{{myscript}}"></script>
+    {% endfor %}
+
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+
+</head>
+<body>
+    <div class="navbar">
+        <a class="active" href="/index">Home</a>
+        <a href="/doctors">Doctors</a>
+        <a href="/nurses">Nurses</a>
+        <a href="/patients">Patients</a>
+        <a href="/prescriptions">Prescriptions</a>
+    </div>
+    <div>
+      <img src="{{url_for('static', filename='kai_unperm.jpg')}}" alt="Kaiser Unpermanente Logo">
+    </div>
+
+    <h2>Our Mission Statement :)</h2>
+    <p style="width: 500px;">
+      Founded in 1945, Kaiser Unpermanente is recognized as one of America’s leading health care providers and not-for-profit health plans. We currently serve several 500-bed hospitals across the United States.
+      </br>
+      </br>
+      Care for members and patients is focused on their total health and guided by their personal Unpermanente Medical Group physicians, specialists, and team of caregivers. Our expert and caring medical teams are empowered and supported by industry-leading technology advances and tools for health promotion, disease prevention, state-of-the-art care delivery, and world-class chronic disease management.
+      </br>
+      </br>
+      We are dedicated to care innovations, clinical research, health education, and improving community health.
+      </br>
+      </br>
+      DISCLAIMER: not affiliated with the way worse company that is Kiaser Permamnente
+    </p>
+
+</body>
+</html>

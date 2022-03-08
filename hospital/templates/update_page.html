@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+    <title>Hospital</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    {% for myscript in jsscripts %}
+    <script src="/static/{{myscript}}"></script>
+    {% endfor %}
+
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <script src="/static/index.js"></script>
+
+</head>
+<body>
+    <div class="navbar">
+        <a class="active" href="/index">Home</a>
+        <a href="/doctors">Doctors</a>
+        <a href="/nurses">Nurses</a>
+        <a href="/patients">Patients</a>
+        <a href="/prescriptions">Prescriptions</a>
+    </div>
+
+    {% if table == "doctors" %}
+    <h1>Update Doctors</h1>
+    <!-- Post Form with Fieldset Tag -->
+    <form method="POST" action="{{ url_for('update', id=doctors[0], table='doctors') }}" name="doctors">
+    <fieldset>
+
+        <legend>Add Doctor</legend>
+        <label for="txt">Name:</label>
+        <input type='text' name='doctorName' required value="{{doctors[1]}}"><br><br>
+
+        <label for="txt">Specialty:</label>
+        <input type='text' name='doctorSpecialty' value="{{doctors[2]}}"><br><br>
+
+        <label for="num">Phone Number:</label>
+        <input type='tel' name='doctorPhone' required value="{{doctors[3]}}"><br><br>
+
+        <input type="submit" value="Submit">
+
+    </fieldset>
+    </form>
+
+
+    {% elif table == "nurses" %}
+    <h1>Update Nurses</h1>
+    <!-- Post Form with Fieldset Tag -->
+    <form method="POST" action="{{ url_for('update', id=nurses[0], table='nurses') }}" name="nurses">
+      <fieldset>
+
+          <legend>Add Nurse</legend>
+          <label for="txt">Name:</label>
+          <input type='text' name="nurseName" required value="{{nurses[1]}}"><br><br>
+
+          <label for="txt">Floor:</label>
+          <input type='text' name="nurseFloor" required value="{{nurses[2]}}"><br><br>
+
+          <label for="num">Phone Number:</label>
+          <input type='tel' name="nursePhone" required value="{{nurses[3]}}"><br><br>
+
+          <input type="submit" value="Submit"><br><br>
+
+          <label for="txt">NOTE: (To add a nurse-patient relationship, click the 'Manage..' button in the table below)</label>
+
+      </fieldset>
+    </form>
+
+
+    {% elif table == "patients" %}
+    <h1>Update Patients</h1>
+    <!-- Post Form with Fieldset Tag -->
+    <form method="POST" action="{{ url_for('update', id=patients[0], table='patients') }}" name="patients">
+        <fieldset>
+
+            <legend>Add Patient</legend>
+            <label for="txt">Name:</label>
+            <input type='text' name="patientName" required value="{{patients[1]}}"><br><br>
+
+            <label for="num">Insurance Number:</label>
+            <input type='number' name="patientInsuranceNo" value="{{patients[2]}}"><br><br>
+
+            <label for="txt">Room:</label>
+            <input type='number' name="patientRoom" value="{{patients[3]}}"><br><br>
+
+            <label for="num">Phone Number:</label>
+            <input type='tel' name="patientPhone" required value="{{patients[4]}}"><br><br>
+
+            <label for="num">Patient's Doctor</label>
+            <select name="doctorID" required >
+              {% for doc in doctors %}
+              <!-- doc[0] = doctorID, doc[1] = doctorName -->
+              <option value="{{ doc[0] }}" {% if doc[0] == patients[5] %} selected="selected" {% endif %}>{{ doc[1] }}</option>
+              {% endfor %}
+            </select>
+
+            <br><br>
+
+            <input type="submit" value="Submit"><br><br>
+
+            <label for="txt">NOTE: (To add a nurse-patient relationship, click the 'Manage..' button in the table below)</label>
+
+        </fieldset>
+    </form>
+
+
+    {% elif table == "prescriptions" %}
+    <h1>Update Prescriptions</h1>
+    <!-- Post Form with Fieldset Tag -->
+    <form method="POST" action="{{ url_for('update', id=prescriptions[0], table='prescriptions') }}" name="prescriptions">
+        <fieldset>
+
+            <legend>Add Prescription</legend>
+            <label for="txt">Details:</label>
+            <input type='text' name="prescriptionDetails" required value="{{prescriptions[1]}}"><br><br>
+
+            <label for="num">Date:</label>
+            <input type='date' name="prescriptionDate" required value="{{prescriptions[2]}}"><br><br>
+
+            <label for="num">Prescription's Patient</label>
+            <select name="patientID" required >
+              {% for pat in patients %}
+              <!-- pat[0] = patientID, pat[1] = patientName -->
+              <option value="{{ pat[0] }}" {% if pat[0] == prescriptions[3] %} selected="selected" {% endif %}>{{ pat[1] }}</option>
+              {% endfor %}
+            </select>
+            <br><br>
+
+            <label for="num">Prescription's Doctor</label>
+            <select name="doctorID" required >
+              {% for doc in doctors %}
+              <!-- doc[0] = doctorID, doc[1] = doctorName -->
+              <option value="{{ doc[0] }}" {% if doc[0] == prescriptions[5] %} selected="selected" {% endif %}>{{ doc[1] }}</option>
+              {% endfor %}
+            </select>
+            <br><br>
+
+            <input type="submit" value="Submit">
+
+        </fieldset>
+    </form>
+
+    <!-- {% elif table == "nursesPatients"%} -->
+    <!-- <h1>Update nursesPatients</h1> -->
+
+    <!-- Post Form with Fieldset Tag -->
+    <!-- <form method="POST" action="/update/{{nursesPatients[0]}} {{nursesPatients[2]}}?table=nursesPatients" name="nursesPatients"> -->
+      <!-- <fieldset> -->
+
+          <!-- <legend>Update Nurse-Patient Relationship</legend> -->
+
+            <!-- <label for="num">Nurse</label> -->
+            <!-- <select name="nurseID" class="npselect" required > -->
+              <!-- {% for n in nurses %} -->
+              <!-- n[0] = nurseID, n[1] = nurseName -->
+              <!-- <option value="{{ n[0] }}" {% if n[0] == nursesPatients[0] %} selected="selected" {% endif %}>(ID: {{n[0]}}) {{n[1]}}</option> -->
+              <!-- {% endfor %} -->
+            <!-- </select> -->
+
+            <!-- <label for="num">Patient</label> -->
+            <!-- <select name="patientID" class="npselect" required > -->
+              <!-- {% for p in patients %} -->
+              <!-- p[0] = patientID, p[1] = patientName -->
+              <!-- <option value="{{ p[0] }}" {% if p[0] == nursesPatients[2] %} selected="selected" {% endif %}>(ID: {{p[0]}}) {{p[1]}}</option> -->
+              <!-- {% endfor %} -->
+            <!-- </select> -->
+
+          <!-- <input type="submit" name="insertNurse" value="Submit"> -->
+
+      <!-- </fieldset> -->
+    <!-- </form> -->
+
+
+    {% else %}
+      <h1>Shouldn't be seeing this honestly</h1>
+    {% endif %}
+
+</body>
+</html>

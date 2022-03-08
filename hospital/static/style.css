@@ -1,0 +1,130 @@
+body {
+    padding-left: 5px;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .navbar {
+    overflow: hidden;
+    background-color: #000000;
+  }
+
+  .navbar a {
+    float: left;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 15px 20px;
+    text-decoration: none;
+    font-size: 20px;
+  }
+
+  .navbar a:hover {
+    background-color: #f7dfca;
+    color: black;
+  }
+
+
+
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+  th {
+   background-color: #d0d0d0;
+  }
+
+  tr:nth-child(odd) {
+    background-color: #f8f8f8;
+  }
+
+
+
+  /* Add a black background color to the top navigation bar */
+  .topnav {
+    overflow: hidden;
+    background-color: #8f8f8f;
+  }
+
+  /* Style the links inside the navigation bar */
+  .topnav a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  /* Change the color of links on hover */
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+  /* Style the "active" element to highlight the current page */
+  /* .topnav a.active {
+    background-color: #2196F3;
+    color: white;
+  } */
+
+  /* Style the search box inside the navigation bar */
+  .topnav input[type=text] {
+    float: left;
+    padding: 6px;
+    border: none;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 22px;
+    font-size: 17px;
+  }
+
+  .topnav .search-container {
+    float: left;
+  }
+
+  .topnav input[type=text] {
+    padding: 6px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 17px;
+    border: none;
+  }
+
+  .topnav .search-container button {
+    float: right;
+    padding: 6px 10px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 16px;
+    background: #ddd;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .topnav .search-container button:hover {
+    background: #ccc;
+  }
+
+  td form {
+    display: block;
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+
+  .npselect {
+    margin-right: 15px;
+  }
+
+  .manageButton {
+    background-color: #f7dfca;
+  }

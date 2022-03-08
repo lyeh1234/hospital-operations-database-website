@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+    <title>Hospital</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    {% for myscript in jsscripts %}
+    <script src="/static/{{myscript}}"></script>
+    {% endfor %}
+
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <script src="/static/index.js"></script>
+
+</head>
+<body>
+    <div class="navbar">
+        <a class="active" href="/index">Home</a>
+        <a href="/doctors">Doctors</a>
+        <a href="/nurses">Nurses</a>
+        <a href="/patients">Patients</a>
+        <a href="/prescriptions">Prescriptions</a>
+    </div>
+    <h1>Nurses</h1>
+
+    <!-- Post Form with Fieldset Tag -->
+    <form method="POST" action="nurses">
+      <fieldset>
+
+          <legend>Add Nurse</legend>
+          <label for="txt">Name:</label>
+          <input type='text' name="nurseName" required><br><br>
+
+          <label for="txt">Floor:</label>
+          <input type='text' name="nurseFloor" required><br><br>
+
+          <label for="num">Phone Number:</label>
+          <input type='tel' name="nursePhone" required><br><br>
+
+          <input type="submit" name="insertNurse" value="Submit"> <br><br>
+
+          <label for="txt">NOTE: (To add a nurse-patient relationship, click the 'Manage..' button in the table below)</label>
+
+      </fieldset>
+    </form>
+
+    <h3>View Nurses:</h3>
+    <div class="topnav">
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search..." name="search" onkeyup="searchFilter()">
+      </div>
+    </div>
+
+      <table id="dataTable">
+        <tr>
+          <th></th>
+          <th>Nurse ID</th>
+          <th>Nurse Name</th>
+          <th>Nurse Floor</th>
+          <th>Nurse Phone</th>
+          <th>Nurse's Patients <form method="GET" action="/nursesPatients" style="display: inline;"><button class="manageButton" type="submit">Manage..</button></form></th>
+        </tr>
+
+        {% for n in nurses %}
+        <tr>
+          <td>
+            <form method="POST" action="{{ url_for('update', id=n[0], table='nurses') }}"><button name="updateButton">UPDATE</button></form>
+            <form method="POST" action="/nurses"><input hidden name="nurseID" value={{n[0]}}><button type="submit" name="deleteNurse">DELETE</button></form>
+          </td>
+          <td title="{{n[0]}}">{{n[0]}}</td>
+          <td title="{{n[1]}}">{{n[1]}}</td>
+          <td title="{{n[2]}}">{{n[2]}}</td>
+          <td title="{{n[3]}}">{{n[3]}}</td>
+          <td>
+            {% for pat in n[4] %}
+              <span>{{pat}}, </span>
+            {% endfor %}
+          </td>
+        </tr>
+        {% endfor %}
+
+      </table>
+
+</body>
+</html>

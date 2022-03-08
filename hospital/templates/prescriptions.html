@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+    <title>Hospital</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    {% for myscript in jsscripts %}
+    <script src="/static/{{myscript}}"></script>
+    {% endfor %}
+
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <script src="/static/index.js"></script>
+
+</head>
+<body>
+    <div class="navbar">
+        <a class="active" href="/index">Home</a>
+        <a href="/doctors">Doctors</a>
+        <a href="/nurses">Nurses</a>
+        <a href="/patients">Patients</a>
+        <a href="/prescriptions">Prescriptions</a>
+    </div>
+    <h1>Prescriptions</h1>
+
+    <!-- Post Form with Fieldset Tag -->
+    <form method="POST" action="prescriptions">
+        <fieldset>
+
+            <legend>Add Prescription</legend>
+            <label for="txt">Details:</label>
+            <input type='text' name="prescriptionDetails" required><br><br>
+
+            <label for="num">Date:</label>
+            <input type='date' name="prescriptionDate" required><br><br>
+
+            <label for="num">Prescription's Patient</label>
+            <select name="patientID" required>
+              <option disabled selected value=""> -- select an option -- </option>
+
+              {% for pat in patients %}
+              <!-- pat[0] = patientID, pat[1] = patientName -->
+              <option value="{{ pat[0] }}">{{ pat[1] }}</option>
+              {% endfor %}
+            </select>
+            <br><br>
+
+            <label for="num">Prescription's Doctor</label>
+            <select name="doctorID" required>
+              <option disabled selected value=""> -- select an option -- </option>
+
+              {% for doc in doctors %}
+              <!-- doc[0] = doctorID, doc[1] = doctorName -->
+              <option value="{{ doc[0] }}">{{ doc[1] }}</option>
+              {% endfor %}
+            </select>
+            <br><br>
+
+            <input type="submit" name="insertPrescription" value="Submit">
+
+        </fieldset>
+    </form>
+
+    <h3>View Prescriptions:</h3>
+    <div class="topnav">
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search..." name="search" onkeyup="searchFilter()">
+      </div>
+    </div>
+
+        <table id="dataTable">
+          <tr>
+            <th></th>
+            <th>Prescription ID</th>
+            <th>Prescription Details</th>
+            <th>Prescription Date</th>
+            <th>Prescription's Patient</th>
+            <th>Prescription's Doctor</th>
+          </tr>
+
+          {% for p in prescriptions %}
+          <tr>
+            <td>
+              <form method="POST" action="{{ url_for('update', id=p[0], table='prescriptions') }}"><button name="updateButton">UPDATE</button></form>
+              <form method="POST" action="/prescriptions"><input hidden name="prescriptionID" value={{p[0]}}><input hidden name="patientID" value={{p[3]}}><button type="submit" name="deletePrescription">DELETE</button></form>
+            </td>
+            <td title="{{p[0]}}">{{p[0]}}</td>
+            <td title="{{p[1]}}">{{p[1]}}</td>
+            <td title="{{p[2]}}">{{p[2]}}</td>
+            <td title="Patient's ID: {{p[3]}}">{{p[4]}}</td> <!-- p[3] = patientID, p[4] = patientName -->
+            <td title="Doctor's ID: {{p[5]}}">{{p[6]}}</td> <!-- p[5] = doctorID, p[6] = doctorName -->
+          </tr>
+          {% endfor %}
+
+        </table>
+</body>
+</html>

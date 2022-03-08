@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+    <title>Hospital</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    {% for myscript in jsscripts %}
+    <script src="/static/{{myscript}}"></script>
+    {% endfor %}
+
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <script src="/static/index.js"></script>
+
+</head>
+<body>
+    <div class="navbar">
+        <a class="active" href="/index">Home</a>
+        <a href="/doctors">Doctors</a>
+        <a href="/nurses">Nurses</a>
+        <a href="/patients">Patients</a>
+        <a href="/prescriptions">Prescriptions</a>
+    </div>
+    <h1>Patients</h1>
+
+    <!-- Post Form with Fieldset Tag -->
+    <form method="POST" action="patients">
+        <fieldset>
+
+            <legend>Add Patient</legend>
+            <label for="txt">Name:</label>
+            <input type='text' name="patientName" required><br><br>
+
+            <label for="num">Insurance Number:</label>
+            <input type='number' name="patientInsuranceNo"><br><br>
+
+            <label for="txt">Room:</label>
+            <input type='number' name="patientRoom"><br><br>
+
+            <label for="num">Phone Number:</label>
+            <input type='tel' name="patientPhone" required><br><br>
+
+            <label for="num">Patient's Doctor</label>
+            <select name="doctorID" required>
+              <option disabled selected value=""> -- select an option -- </option>
+
+              {% for doc in doctors %}
+              <!-- doc[0] = doctorID, doc[1] = doctorName -->
+              <option value="{{ doc[0] }}">{{ doc[1] }}</option>
+              {% endfor %}
+            </select>
+
+            <br><br>
+
+            <!-- NOTE: maybe we don't need this??? think it makes sense to only have prescrip deal with it -->
+            <!-- <label for="num">Patient's Prescription's ID</label> -->
+            <!-- <select name="prescriptionID"> -->
+              <!-- {% for pre in prescriptions %} -->
+              <!-- <option value="{{ pre[0] }}">{{ pre[1] }}</option> -->
+              <!-- {% endfor %} -->
+            <!-- </select> -->
+
+            <input type="submit" name="insertPatient" value="Submit"><br><br>
+
+            <label for="txt">NOTE: (To add a nurse-patient relationship, click the 'Manage..' button in the table below)</label>
+
+        </fieldset>
+    </form>
+
+    <h3>View Patients:</h3>
+    <div class="topnav">
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search..." name="search" onkeyup="searchFilter()">
+      </div>
+    </div>
+
+        <table id="dataTable">
+          <tr>
+            <th></th>
+            <th>Patient ID</th>
+            <th>Patient Name</th>
+            <th>Patient Insurance No.</th>
+            <th>Patient Room</th>
+            <th>Patient Phone</th>
+            <th>Patient's Doctor</th>
+            <th>Patient's Prescription Details</th>
+            <th>Patient's Nurses <form method="GET" action="/nursesPatients" style="display: inline;"><button class="manageButton" type="submit">Manage..</button></form></th>
+          </tr>
+
+          {% for p in patients %}
+          <tr>
+            <td>
+              <form method="POST" action="{{ url_for('update', id=p[0], table='patients') }}"><button name="updateButton">UPDATE</button></form>
+              <form method="POST" action="/patients"><input hidden name="patientID" value={{p[0]}}><button type="submit" name="deletePatient">DELETE</button></form>
+            </td>
+            <td title="{{p[0]}}">{{p[0]}}</td> <!-- p[0] = Patient ID -->
+            <td title="{{p[1]}}">{{p[1]}}</td> <!-- p[1] = Patient Name -->
+            <td title="{{p[2]}}">{{p[2]}}</td> <!-- p[2] = Patient Insurance No. -->
+            <td title="{{p[3]}}">{{p[3]}}</td> <!-- p[3] = Patient Room -->
+            <td title="{{p[4]}}">{{p[4]}}</td> <!-- p[4] = Patient Phone -->
+            <td title="Doctor's ID: {{p[5]}}">{{p[6]}}</td> <!-- p[5] = Patient's Doctor's ID, p[6] = Patient's Doctor's Name -->
+            <td title="Prescription's ID: {{p[7]}}">{{p[8]}}</td> <!-- p[7] = Patient's Prescription's ID, p[8] = Patient's Prescription's details  -->
+            <td>
+              {% for nurse in p[9] %}
+              <span>{{nurse}}, </span>
+              {% endfor %}
+            </td>  <!--Patient's Nurses -->
+          </tr>
+          {% endfor %}
+
+        </table>
+
+</body>
+</html>
